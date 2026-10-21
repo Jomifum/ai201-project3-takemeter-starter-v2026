@@ -39,140 +39,115 @@
 
 ## What This Does
 
-<!-- Your community, and what your classifier sorts posts into. Three or four
-     sentences. -->
-
-
+This project is a text classifier designed to sort posts from the **r/sustainability** community. Online environmental communities often mix practical tips, high-level economic arguments, and scientific data drops. This model automatically categorizes posts into one of three distinct lanes to help users filter between actionable daily habits, broad systemic discussions, and hard news.
 
 ---
 
 ## Label Taxonomy
 
-<!-- Each label: a one-sentence definition and two real examples from your
-     reading. Then your decision rule for the hardest boundary.
+### `personal_action`
 
-     The decision rule is worth a point on its own and it's the thing most
-     people leave out. Every taxonomy has a hardest boundary. Name yours. -->
-
-### `label_one`
-
-**Definition:**
+**Definition:** A post asking for or sharing practical, individual tips for reducing one's environmental footprint at home or work.
 
 **Example 1:**
->
+> "I tried a 10-litre bucket bathe — it cut my shower water use by about 80%."
 
 **Example 2:**
->
+> "I force myself to use the local train 4-5 days a week, instead of driving the 8 miles to uni."
 
-### `label_two`
+### `systemic_debate`
 
-**Definition:**
+**Definition:** An argument or discussion focusing on large-scale corporate practices, government policies, or global economic systems.
 
 **Example 1:**
->
+> "Cars are an environmental catastrophe no matter what they’re burning (or not)."
 
 **Example 2:**
->
+> "The hard part is literally getting the petroleum usage out of the entire supply chain, not just the end of it."
+
+### `news_and_data`
+
+**Definition:** A post sharing or summarizing a specific new scientific study, climate metric, or recent environmental news event.
+
+**Example 1:**
+> "So a 2024 study suggests that would take almost 500 years to exhaust earth’s phosphorus reserves."
+
+**Example 2:**
+> "The rare earth thing is already gone from 2028 battery chemistries and the weights will get better by 2030."
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `personal_action` and `systemic_debate`
 
 **The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
-
-
+If the ultimate goal of the post is to persuade the reader to change a daily habit or make a personal purchase (like buying an e-bike or changing shower habits), it is `personal_action`—even if 80% of the post is made up of global data and studies.
 
 ---
 
 ## The Dataset
 
-<!-- Where you collected from, how you labelled, your counts, and three hard
-     cases. -->
+**Where the posts came from:** Public threads on the `r/sustainability` subreddit.
 
-**Where the posts came from:**
-
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** I labeled the first 20 posts completely cold. For the remaining 184, I used an AI tool for pre-labeling based on my strict taxonomy, followed by a mandatory manual review and correction of every single row.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `personal_action` | 111 | 54.4% |
+| `systemic_debate` | 73 | 35.8% |
+| `news_and_data` | 20 | 9.8% |
+| **Total** | 204 | 100% |
 
 **Three hard cases**
 
-<!-- Any post that made you pause: what it was, which two labels it could have
-     been, and what you chose. These are worth more than the easy 190. -->
-
 **1.**
-> *The post:*
+> *The post:* "I tried a 10-litre bucket bathe — it cut my shower water use by about 80%... My motivation is this: drought pressure, increasingly dry summers, and water bills creeping up."
 >
-> *Could have been:*
+> *Could have been:* `personal_action` or `systemic_debate`
 >
-> *I chose, because:*
+> *I chose, because:* `personal_action`. Applying my decision rule, the macro-level environmental data was subordinated to the personal call-to-action of changing a daily household habit.
 
 **2.**
-> *The post:*
+> *The post:* "This is fair. But I don’t think the answer is to stop these. The answer is public education. 1. Make sure that people are wearing proper safety equipment... I hae a brain injury and most of the people I know with brain injuries got them from car accidents."
 >
-> *Could have been:*
+> *Could have been:* `personal_action` or `systemic_debate`
 >
-> *I chose, because:*
+> *I chose, because:* `systemic_debate`. Despite the personal medical story, the solutions demanded ("public education" and "proper infrastructure") require government intervention and city planning.
 
 **3.**
-> *The post:*
+> *The post:* "So a 2024 study suggests that would take almost 500 years to exhaust earth’s phosphorus reserves. I think this can safely be left for future generations who will have abundant energy, automation..."
 >
-> *Could have been:*
+> *Could have been:* `news_and_data` or `systemic_debate`
 >
-> *I chose, because:*
+> *I chose, because:* `systemic_debate`. The 2024 study was merely a jumping-off point for a sweeping philosophical argument about the economy and future societies, rather than a straightforward data summary.
 
 ---
 
 ## The Training Run
 
-<!-- Your starting model, your settings, and anything you changed and why. -->
-
-**Base model:**
-
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
-
-**Anything I changed from the defaults, and why:**
-
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
-
-
+- **Hardware / Device:** CPU (`torch_version: 2.14.1+cpu`)
+- **Settings Used:** Default settings — 3 epochs, learning rate `2e-5`, batch size 16, and maximum length of 128 tokens per post.
+- **Modifications:** None. The default settings were sufficient for a baseline run on a laptop CPU.
 
 ---
 
 ## How I Used AI
 
-<!-- Two specific moments — what you asked, what came back, what you changed.
-
-     ⚠️ Plus disclosure of any pre-labelling. If you had a model pre-label a
-     batch and then read and corrected every one, say that. It's an allowed
-     workflow and disclosing it costs you nothing. Not disclosing it is the
-     problem. -->
-
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I provided my exact taxonomy and decision rules, and asked the AI to format batches of raw Reddit text into a CSV structure with proposed labels.
+- *What came back:* Raw CSV blocks with `text`, `label`, and `note` columns filled out based on my definitions.
+- *What I changed:* I manually reviewed every single row and corrected any labels where the AI misunderstood the nuance of my boundary rules before pasting them into my file.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I asked the AI to argue the strongest case for the two most likely labels for my three "hard cases" without telling me the final answer.
+- *What came back:* A breakdown of why each borderline post could fit into two different categories based on my definitions.
+- *What I changed:* I used this debate to clarify my own decision rule and firmly document exactly why I ultimately chose the label I did.
 
 **Pre-labelling disclosure:**
+I labeled my first 20 posts completely cold to establish a baseline. I then used an AI model to pre-label the remaining 184 posts. I read, verified, and manually corrected every single one of those pre-labeled rows before using them in my dataset.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
