@@ -1,0 +1,164 @@
+[
+  {
+    "seed": 42,
+    "n_test": 31,
+    "accuracy": 0.6774193548387096,
+    "f1_macro": 0.4000000000000001,
+    "per_label": {
+      "personal_action": {
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1": 0.8,
+        "support": 18
+      },
+      "systemic_debate": {
+        "precision": 0.75,
+        "recall": 0.2727272727272727,
+        "f1": 0.4,
+        "support": 11
+      },
+      "news_and_data": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 2
+      }
+    },
+    "confusion": {
+      "personal_action": {
+        "personal_action": 18,
+        "systemic_debate": 0,
+        "news_and_data": 0
+      },
+      "systemic_debate": {
+        "personal_action": 8,
+        "systemic_debate": 3,
+        "news_and_data": 0
+      },
+      "news_and_data": {
+        "personal_action": 1,
+        "systemic_debate": 1,
+        "news_and_data": 0
+      }
+    },
+    "confidence": {
+      "mean_when_right": 0.5581156611442566,
+      "mean_when_wrong": 0.4972347617149353,
+      "accuracy_most_confident_third": 1.0,
+      "accuracy_least_confident_third": 0.6,
+      "n_per_third": 10
+    },
+    "device": "cpu",
+    "device_name": "CPU",
+    "torch_version": "2.14.1+cpu",
+    "max_length": 128
+  },
+  {
+    "seed": 7,
+    "n_test": 31,
+    "accuracy": 0.7096774193548387,
+    "f1_macro": 0.45964432284541723,
+    "per_label": {
+      "personal_action": {
+        "precision": 0.68,
+        "recall": 0.9444444444444444,
+        "f1": 0.7906976744186046,
+        "support": 18
+      },
+      "systemic_debate": {
+        "precision": 0.8333333333333334,
+        "recall": 0.45454545454545453,
+        "f1": 0.5882352941176471,
+        "support": 11
+      },
+      "news_and_data": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 2
+      }
+    },
+    "confusion": {
+      "personal_action": {
+        "personal_action": 17,
+        "systemic_debate": 1,
+        "news_and_data": 0
+      },
+      "systemic_debate": {
+        "personal_action": 6,
+        "systemic_debate": 5,
+        "news_and_data": 0
+      },
+      "news_and_data": {
+        "personal_action": 2,
+        "systemic_debate": 0,
+        "news_and_data": 0
+      }
+    },
+    "confidence": {
+      "mean_when_right": 0.49340760707855225,
+      "mean_when_wrong": 0.4457019567489624,
+      "accuracy_most_confident_third": 1.0,
+      "accuracy_least_confident_third": 0.4,
+      "n_per_third": 10
+    },
+    "device": "cpu",
+    "device_name": "CPU",
+    "torch_version": "2.14.1+cpu",
+    "max_length": 128
+  },
+  {
+    "seed": 2024,
+    "n_test": 31,
+    "accuracy": 0.7096774193548387,
+    "f1_macro": 0.45186136071887034,
+    "per_label": {
+      "personal_action": {
+        "precision": 0.7391304347826086,
+        "recall": 0.9444444444444444,
+        "f1": 0.8292682926829268,
+        "support": 18
+      },
+      "systemic_debate": {
+        "precision": 0.625,
+        "recall": 0.45454545454545453,
+        "f1": 0.5263157894736842,
+        "support": 11
+      },
+      "news_and_data": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 2
+      }
+    },
+    "confusion": {
+      "personal_action": {
+        "personal_action": 17,
+        "systemic_debate": 1,
+        "news_and_data": 0
+      },
+      "systemic_debate": {
+        "personal_action": 6,
+        "systemic_debate": 5,
+        "news_and_data": 0
+      },
+      "news_and_data": {
+        "personal_action": 0,
+        "systemic_debate": 2,
+        "news_and_data": 0
+      }
+    },
+    "confidence": {
+      "mean_when_right": 0.5123090147972107,
+      "mean_when_wrong": 0.44942963123321533,
+      "accuracy_most_confident_third": 1.0,
+      "accuracy_least_confident_third": 0.3,
+      "n_per_third": 10
+    },
+    "device": "cpu",
+    "device_name": "CPU",
+    "torch_version": "2.14.1+cpu",
+    "max_length": 128
+  }
+]
