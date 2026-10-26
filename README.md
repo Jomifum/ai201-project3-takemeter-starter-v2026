@@ -185,29 +185,28 @@ The trained model's `systemic_debate` F1 rose from 0.000 to 0.400, suggesting th
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Dataset Size | At least 200 labeled examples in total | 204 | 204 | 204 | MET |
+| 2. Class Balance | No single label makes up more than 60% of the dataset | 56.9% max (`personal_action`) | 56.9% max (`personal_action`) | 56.9% max (`personal_action`) | MET |
+| 3. `personal_action` Recall | Recall for `personal_action` must be > 0.75 | 1.000 | 0.944 | 0.944 | MET |
+| 4. Baseline F1 Beat | Fine-tuned macro F1 must beat zero-shot baseline macro F1 by at least 0.05 | +0.142 (0.400 vs. 0.258) | +0.201 (0.460 vs. 0.258) | +0.193 (0.452 vs. 0.258) | MET |
+| 5. Confidence Gap | Accuracy of the most confident third must be at least 20% higher than the least confident third | 1.000 vs. 0.600 (1.67x) | 1.000 vs. 0.400 (2.50x) | 1.000 vs. 0.300 (3.33x) | MET |
 
 ### Confusion matrix
 
 <!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
      An image of a matrix earns nothing. -->
 
-| true \ predicted |  |  |  |
+| true \ predicted | personal_action | systemic_debate | news_and_data |
 |---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| **personal_action** | 18 | 0 | 0 |
+| **systemic_debate** | 8 | 3 | 0 |
+| **news_and_data** | 1 | 1 | 0 |
 
 **My biggest off-diagonal number, and what it means:**
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
-
-
+The largest error is 8 real `systemic_debate` posts classified as `personal_action`, while 0 `personal_action` posts were classified as `systemic_debate`, showing a strong lean toward `personal_action` on this boundary; the agreement report can help determine whether this reflects inconsistent labels or a model limitation.
 
 ---
 
