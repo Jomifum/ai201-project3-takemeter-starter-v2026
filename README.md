@@ -217,11 +217,11 @@ The largest error is 8 real `systemic_debate` posts classified as `personal_acti
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Dataset Size | At least 200 labeled examples | MET | All three runs used 204 examples, above the 200-example target. |
+| 2 | Class Balance | No label above 60% | MET | `personal_action` was the largest class at 56.9% in all three runs, below 60%. |
+| 3 | `personal_action` Recall | Greater than 0.75 | MET | Recall was 1.000, 0.944, and 0.944 across the three seeds; every run exceeded 0.75. |
+| 4 | Baseline F1 Beat | Macro F1 at least 0.05 above the zero-shot baseline | MET | The trained model beat the 0.258 baseline by 0.142, 0.201, and 0.193 across the seeds. |
+| 5 | Confidence Gap | Most-confident-third accuracy at least 20% higher than least-confident-third accuracy | MET | The most-confident third scored 1.000 for each seed, versus 0.600, 0.400, and 0.300 for the least-confident third. |
 
 **Diagnoses**
 
@@ -234,6 +234,7 @@ The largest error is 8 real `systemic_debate` posts classified as `personal_acti
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
 
+No criterion was missed. The largest confusion is a directional 8-to-0 error: 8 real `systemic_debate` posts were called `personal_action`, while no `personal_action` posts were called `systemic_debate` (seed 42). The agreement check found 30/30 matches and no disagreements, so it gives no evidence of inconsistent labeling in that staff sample; this points more toward a difficult boundary or a model bias toward `personal_action` than a demonstrated labeling inconsistency. The agreement set uses a different taxonomy, however, so it cannot directly confirm how consistently I applied the `systemic_debate`/`personal_action` boundary in my training data.
 
 
 ---
@@ -246,7 +247,7 @@ The largest error is 8 real `systemic_debate` posts classified as `personal_acti
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 30 / 30 = 100%
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
@@ -268,51 +269,37 @@ The largest error is 8 real `systemic_debate` posts classified as `personal_acti
      written rule two different ways on 30 posts, that is direct evidence about
      what you did across your own 200. -->
 
-**1.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
-
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+None. The checked-in staff and my labels match for all 30 posts, so there are no disagreements to adjudicate.
 
 **What the pattern in my disagreements tells me:**
 
+There were no disagreements: I matched the staff label on all 30 posts, including the cases marked borderline in the staff file. That gives no evidence of inconsistency on this sample or of a recurring mistake pattern; it also means this report cannot identify which boundary drove errors in my own training data.
 
 
 ---
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** I added 15 high-quality `systemic_debate` examples to `labels.csv`, bringing the dataset from 204 to 219 examples.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** In the seed 42 confusion matrix, 8 real `systemic_debate` posts were misclassified as `personal_action`, while 0 `personal_action` posts were misclassified as `systemic_debate`. That one-way 8-to-0 error suggested the model needed more examples of the under-recognized `systemic_debate` class.
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Dataset Size | At least 200 labeled examples | 219 | 219 | 219 | MET |
+| 2. Class Balance | No single label makes up more than 60% | 53.0% max (`personal_action`) | 53.0% max (`personal_action`) | 53.0% max (`personal_action`) | MET |
+| 3. `personal_action` Recall | Greater than 0.75 | 1.000 | 0.882 | 0.941 | MET |
+| 4. Baseline F1 Beat | Macro F1 at least 0.05 above the zero-shot baseline (0.258) | +0.275 (0.533 vs. 0.258) | +0.325 (0.583 vs. 0.258) | +0.300 (0.558 vs. 0.258) | MET |
+| 5. Confidence Gap | Most-confident-third accuracy at least 20% higher than least-confident-third accuracy | 1.000 vs. 0.636 (1.57x) | 1.000 vs. 0.818 (1.22x) | 1.000 vs. 0.727 (1.38x) | MET |
 
 **Did it help, and how do I know:**
 
 <!-- If it didn't, say so. Relabelling that didn't help is a genuinely
      interesting result and earns full credit. -->
 
+Yes. Average accuracy rose from 0.699 before to 0.818 after (+0.119), and average macro F1 rose from 0.437 to 0.558 (+0.121); both metrics improved for each seed. The new data changed the test split (31 examples before versus 33 after), so this is encouraging evidence of improvement rather than a perfectly controlled comparison.
 
 
 ---
@@ -321,12 +308,13 @@ The largest error is 8 real `systemic_debate` posts classified as `personal_acti
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
-
+No criteria were missed in the after-run. The model still scored 0.000 F1 for `news_and_data` on all three seeds, though that class had only two test examples per seed; `systemic_debate` errors also remain, with 5, 1, and 3 posts called `personal_action` for seeds 42, 7, and 2024.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
 <!-- Two sentences. Your confusion matrix is the evidence. -->
 
+The extra examples improved the `systemic_debate` boundary: its F1 rose from 0.400, 0.588, and 0.526 before to 0.750, 0.867, and 0.786 after, and the number of `systemic_debate` posts called `personal_action` fell from 8, 6, and 6 to 5, 1, and 3. The model still confuses some structural arguments with individual actions and fails to recognize the rare `news_and_data` class in these small test sets.
 
 
 <!-- ═════════════════════════════════════════════════════════════════════
